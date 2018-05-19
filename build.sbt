@@ -2,6 +2,8 @@ import Dependencies._
 
 lazy val copyDeps = taskKey[Unit]("Copies all dependencies in a special directory")
 
+lazy val osgiTest = taskKey[Unit]("Executes OSGi integration tests")
+
 lazy val root = (project in file(".")).
   settings(
     inThisBuild(List(
@@ -17,5 +19,9 @@ lazy val root = (project in file(".")).
       IO.createDirectory(depsTarget)
       IO.copy(dependencies.filter(_.isFile)
         .map(f => (f, new File(depsTarget, f.getName))))
-    }
+    },
+    osgiTest in Test := Def.sequential(
+      copyDeps,
+      test in Test
+    ).value
   )
