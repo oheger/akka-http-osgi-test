@@ -13,9 +13,11 @@ lazy val root = (project in file(".")).
     )),
     name := "akka-http-osgi-test",
     libraryDependencies ++= Seq(akkaHttp, scalaTest % Test),
+    libraryDependencies ++= akka,
     libraryDependencies ++= paxExam,
     libraryDependencies += felix,
     libraryDependencies += scalaCompiler,
+    fork := true,
     copyDeps := {
       val dependencies = (Runtime / dependencyClasspath).value.files
       val depsTarget = new File(target.value, "dependencies")
